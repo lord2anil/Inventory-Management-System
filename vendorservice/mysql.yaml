@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmsql
+  namespace: builduser
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: vmsql
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: vmsql
+  namespace: builduser
+spec:
+  selector:
+    matchLabels:
+      app: vmsql
+  template:
+    metadata:
+      
+      labels:
+        app: vmsql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: vmsql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        ports:
+        - containerPort: 3306
+          name: vmdb
+        volumeMounts:
+        - name: vmdb
+          mountPath: /var/lib/mysql
+          subPath: vmdb
+      volumes:
+      - name: vmdb
+        persistentVolumeClaim:
+          claimName: vmdb

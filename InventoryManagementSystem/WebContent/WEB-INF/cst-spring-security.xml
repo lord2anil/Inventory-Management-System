@@ -1,0 +1,57 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"   
+	 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security 
+        http://www.springframework.org/schema/security/spring-security.xsd"> 
+        
+<!-- is used to configure the web security services ,
+it configures the filter chains, and we can have multiple <http> elements Since security 3.1  
+there by creating mutiple fitler chains-->
+<http use-expressions="false">
+	    <intercept-url  pattern="/purchaseEntry**" access="ROLE_MSD_ADMIN" />
+		<intercept-url pattern="/" access="ROLE_MSD_ADMIN,ROLE_MSD_DBA" />
+		<intercept-url pattern="/GetDetails**" access="ROLE_MSD_ADMIN,ROLE_MSD_DBA,ROLE_MSD_USER" />
+		 
+		  <!-- all the URIS should start from "/" -->
+	        <!-- 1 attr: url of the Login page, for the first attribute there will be a view controller created in the Spring-web-context.xml.
+	        this is done so that custom login page could load-->
+	        <!-- 2 attr: is action submitted from login page to trigger Spring Security process  -->
+	        <!-- 3 attr: name of the user name parameter that will be submitted via custom login page  -->
+	        <!-- 4 attr: name of the password parameter that will be submitted via custom login page  -->
+	        <!-- 5 attr: name of the page submitted by the login page when error are found or 
+	        when we are try to access the page that goes against the definitions defined in the Spring-security.
+	        as we want to display the errors on the login page it self hence mentioned it as: cstLogin.html?error=true-->
+
+	    <form-login
+	        login-page="/cstLogin.html"
+	        login-processing-url="/cstValidateSecureLogin"
+	        username-parameter="msd_uname123"
+	        password-parameter="msd_pwd123"
+	        authentication-failure-url="/cstLogin.html?error=true"
+	        />
+	    
+	    
+	    <!--  when logout is done then invalidate the session -->
+	    <logout invalidate-session="true" logout-url="/cstlogout"/>
+	    <csrf disabled="true"/>
+	    
+	    <!--  configuration for the access denied handler and to the logout-->
+	    <access-denied-handler error-page="/accessDeniedPage.html"/>
+	    
+</http>
+
+
+<!-- Authentication ProviderManager -->
+<authentication-manager>
+  <authentication-provider>
+    <user-service>
+	<user name="msd_user" password="msd_user" 	authorities="ROLE_MSD_USER" />
+	<user name="msd_admin" password="msd_admin" authorities="ROLE_MSD_ADMIN" />
+	<user name="msd_dba" password="msd_dba" 	authorities="ROLE_MSD_DBA" />
+    </user-service>
+  </authentication-provider>
+</authentication-manager>
+</beans:beans>

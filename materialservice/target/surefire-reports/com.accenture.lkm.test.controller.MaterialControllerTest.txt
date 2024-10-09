@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.accenture.lkm.test.controller.MaterialControllerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.544 sec <<< FAILURE! - in com.accenture.lkm.test.controller.MaterialControllerTest
+indexMaterialControllerTest(com.accenture.lkm.test.controller.MaterialControllerTest)  Time elapsed: 0.332 sec  <<< FAILURE!
+java.lang.AssertionError: Response content expected:<Welcome to Spring Boot Material Service API!> but was:<Hello,Welcome to Spring Boot Material Service API!>
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:54)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:81)
+	at org.springframework.test.web.servlet.result.ContentResultMatchers$5.match(ContentResultMatchers.java:149)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:171)
+	at com.accenture.lkm.test.controller.MaterialControllerTest.indexMaterialControllerTest(MaterialControllerTest.java:38)
+

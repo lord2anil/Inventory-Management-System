@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmtomcat
+  labels:
+    app: vmtomcat
+  namespace: builduser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vmtomcat
+  template:
+    metadata:
+      labels:
+        app: vmtomcat
+    spec:
+      imagePullSecrets:
+        - name: vscred
+      containers:
+      - name: vmtomcat
+        image: localhost:32121/root/docker_registry/vendor_service:img_tag
+        ports:
+        - containerPort: 8080
